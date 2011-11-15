@@ -1,5 +1,4 @@
 require 'spree_core'
-require 'spree_product_documents_hooks'
 
 module SpreeProductDocuments
   class Engine < Rails::Engine
@@ -7,6 +6,9 @@ module SpreeProductDocuments
 
       Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")) do |c|
         Rails.env == "production" ? require(c) : load(c)
+      end
+      Dir.glob(File.join(File.dirname(__FILE__), "../app/overrides/*.rb")) do |c|
+        Rails.application.config.cache_classes ? require(c) : load(c)
       end
       
     end
